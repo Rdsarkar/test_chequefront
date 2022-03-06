@@ -1,0 +1,161 @@
+<div class="container-fluid vh-100" style="white-space: nowrap; padding-top: 1rem; background-color: #511CE6;">
+  <div class="card" style="background-color: #aba0e2;">
+    <div class="card-body">
+      <h3 class="offset-2">Cheque Print</h3>
+      <br>
+      <form [formGroup]="chequeForm">
+        <div class="form-row row">
+          <div class="col-md-2 mb-3">
+            <label for="id">Id :</label>
+            <input placeholder="Auto Generated ID" formControlName="id" type="number" class="form-control" name="id"
+              required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="pay_to">Pay To</label>
+            <input placeholder="Pay To" formControlName="pay_to" type="text" class="form-control" name="pay_to">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="pay_date">PayDate :</label>
+            <input placeholder="Pay Date" formControlName="pay_date" type="date" class="form-control" name="pay_date">
+          </div>
+        </div>
+        <div class="form-row row">
+          <div class="col-md-3 mb-3">
+            <label for="amount">Amount :</label>
+            <input placeholder="Type your Amount" formControlName="amount" type="number" class="form-control"
+              name="amount">
+          </div>
+          <div class="col-md-4 mb-3 justify-content-start">
+            <label for="remarks">Remarks :</label>
+            <input placeholder="Remarks" formControlName="remarks" type="text" class="form-control" name="remarks">
+          </div>
+
+          <div class="col-auto mb-3">
+            <br>
+            <button name="button" type="submit" class="btn btn-sm btn-success" (click)="onCreateButtonClick()"
+              [ngStyle]="isUpdateButtonEnabled == false ? {'display': 'block'} : {'display': 'none'}">Create</button>
+          </div>
+          <div class="col-auto mb-3">
+            <br>
+            <button type="button" (click)="onUpdateButtonClick()" type="submit" class="btn btn-sm btn-warning"
+              [ngStyle]="isUpdateButtonEnabled == true ? {'visibility': 'visible'} : {'visibility': 'hidden'}">Update</button>
+          </div>
+        </div>
+        <div class="form-row row" [formGroup]="dateRangeSelectionForm">
+          <div class="col-auto mb-3">
+            <button type="button" class="btn btn-sm btn-info" (click)="onGetDataButtonClick()">Get Data</button>
+          </div>
+          <div class="col-auto mb-3">
+            <div class="row">
+              <div class="col-auto">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="isDateRangeEnabled" name="isDateRangeDisabled"
+                    type="checkbox" id="isDateRangeDisabled">
+                  <label class="form-check-label" for="defaultCheck1">
+                    Date Range
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto mb-3"
+            [ngStyle]="dateRangeSelectionForm.get('isDateRangeEnabled')?.value == true ? {'visibility': 'visible'} : {'visibility': 'hidden'}">
+            <div class="row">
+              <div class="col-auto">
+                <label>From :</label>
+              </div>
+              <div class="col-auto">
+                <input formControlName="dateFrom" name="dateFrom" type="date" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="col-auto mb-3"
+            [ngStyle]="dateRangeSelectionForm.get('isDateRangeEnabled')?.value == true ? {'visibility': 'visible'} : {'visibility': 'hidden'}">
+            <div class="row">
+              <div class="col-auto">
+                <label>To :</label>
+              </div>
+              <div class="col-auto">
+                <input formControlName="dateTo" name="dateTo" type="date" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="form-row row  justify-content-end">
+          <div class="col-auto mb-3">
+            <button type="button" (click)="onUpdateButtonClick()" type="submit" class="btn btn-sm btn-warning"
+              [ngStyle]="isUpdateButtonEnabled == true ? {'visibility': 'visible'} : {'visibility': 'hidden'}">Update</button>
+          </div>
+          <div class="col-auto mb-3">
+            <button name="button" type="submit" class="btn btn-sm btn-success" (click)="onCreateButtonClick()"
+              [ngStyle]="isUpdateButtonEnabled == false ? {'display': 'block'} : {'display': 'none'}">Create</button>
+          </div>
+        </div> -->
+      </form>
+      <form [formGroup]="deleteChequeForm">
+        <div class="form-row row justify-content-end">
+          <div class="col-md-4 mb-3">
+            <label for="id">Cause of delete :</label>
+            <input placeholder="Cause of delete" formControlName="cause_del" type="text" class="form-control"
+              name="cause_del2">
+          </div>
+        </div>
+      </form>
+      <br>
+      <table class="table table-sm table-bordered " style="text-align: center; background-color: #65edff;">
+        <thead>
+          <tr>
+            <th scope="col">Sl#</th>
+            <th scope="col">ID</th>
+            <th scope="col" style="text-align: left;">Pay To</th>
+            <th scope="col">Pay Date</th>
+            <th scope="col" style="text-align: right;">Amount</th>
+            <th scope="col" style="text-align: left;">Remarks</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Print</th>
+            <th scope="col">Print Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of displayList | paginate:{ itemsPerPage: 4, currentPage: p}, index as i">
+            <td scope="row">{{i+1}}</td>
+            <td>{{item?.id}}</td>
+            <td style="text-align: left;">{{item?.pay_to}}</td>
+            <td>{{getFormattedDate(item?.pay_date)}}</td>
+            <td style="text-align: right;">{{getFormattedNumber(item?.amount)}}</td>
+            <td style="text-align: left; white-space: normal">{{item?.remarks}}</td>
+            <td>
+              <svg (click)="setFormData(item)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path
+                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                <path fill-rule="evenodd"
+                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+              </svg>
+            </td>
+            <td>
+              <svg (click)="onDeleteButtonClick(item)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                <path
+                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+              </svg>
+            </td>
+            <td>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-printer-fill" viewBox="0 0 16 16">
+                <path
+                  d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
+                <path
+                  d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+              </svg>
+            </td>
+            <td> <button type="button" class="btn btn-primary">Confirm</button> </td>
+          </tr>
+          <pagination-controls (pageChange)="p = $event" class="float-right">
+          </pagination-controls>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
