@@ -3,7 +3,7 @@
         <div class="card-body">
             <h3 class="offset-2">Report</h3>
             <br>
-            <!-- <form>
+            <form>
                 <div class="form-row row">
                     <div class="col-md-4 mb-3">
                         <label for="pay_to">Pay To</label>
@@ -11,7 +11,7 @@
                             name="pay_to">
                     </div>
                 </div>
-            </form> -->
+            </form>
             <table class="table table-sm table-bordered " style="text-align: center; background-color: #65edff;">
                 <thead>
                     <tr>
@@ -22,7 +22,7 @@
                         <th scope="col" style="text-align: right;">Amount</th>
                         <th scope="col" style="text-align: left;">Remarks</th>
                         <th scope="col">Reprint</th>
-                       
+
                     </tr>
                 </thead>
                 <tbody>
@@ -42,12 +42,15 @@
                                     d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
                             </svg>
                         </td>
-                       
                     </tr>
-                    <pagination-controls (pageChange)="p = $event" class="float-right">
-                    </pagination-controls>
                 </tbody>
             </table>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <pagination-controls (pageChange)="p = $event" class="float-right">
+                    </pagination-controls>
+                </div>
+            </div>
         </div>
     </div>
 </div>
